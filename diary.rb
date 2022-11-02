@@ -3,7 +3,9 @@ class Diary
   
   def initialize
     # name -> nazwa np III Klasa
+    @name = name
     # students -> uczniowie [Student]
+    @Student = student
     @subjects = [
       Subject.new('Polski'), 
       Subject.new('W-F'), 
@@ -48,13 +50,12 @@ class Diary
     # W-F
   end
  
-  def add_student(first_name, last_name)
-    # Dodaje ucznia do dziennika.
+  def add_student(name, last_name)
+    @student = Student.new()
   end
  
   def remove_student(id)
     # Usuwa ucznia z dziennika jeżeli w nim istnieje
- 
     # Tutaj coś jeszcze powinno się zadziać, na razie nie piszę zobaczymy czy wykminisz
   end
  
@@ -76,18 +77,24 @@ class Subject
 end
  
 class Student
-  def initialize
-    # id => Integer od 1 w górę
-    # first_name -> imie
-    # last_name -> nazwisko
+  attr_reader :name, :last_name, :id
+  def initialize(id, name, last_name)
+    @student_id = id
+    @student_name = name
+    @student_last_name = lastname
   end
+
+  def to_s
+    "First name: #{@name}, Last name: #{@last_name}, Id: #{@id}"
+  end
+  
 end
  
  
-# diary = Diary.new(...)
-# diary.add_student('Jan', 'Kowalski')
-# diary.add_student('Maciek', 'Wojtaszek')
-# diary.add_student('Rafał', 'Roźniakowski')
+diary = Diary.new(...)
+diary.add_student('Jan', 'Kowalski')
+diary.add_student('Maciek', 'Wojtaszek')
+diary.add_student('Rafał', 'Roźniakowski')
 # diary.show_students
 # diary.show_subjects
 # diary.add_grade_by_id('Matematyka', 1, 3)
