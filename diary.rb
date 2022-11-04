@@ -1,11 +1,12 @@
 class Diary
-  attr_reader :name, :students, :subjects, :grades
+  attr_accessor :name
+  attr_reader :students, :subjects, :grades, :start_id
   
-  def initialize
+  def initialize(coco)
     # name -> nazwa np III Klasa
-    @name = name
+    @name = coco
     # students -> uczniowie [Student]
-    @Student = student
+    @students = []
     @subjects = [
       Subject.new('Polski'), 
       Subject.new('W-F'), 
@@ -13,6 +14,8 @@ class Diary
       Subject.new('Matematyka')
     ]
     # grades -> oceny z przedmiotów dla uczniów (tutaj zostawiam flow Tobie co do typu danych do przechowywania tego)
+    #@ids = Array.new(10){ |x| x+1 }
+    @start_id = 1
   end
  
   def student_grades(id)
@@ -34,7 +37,7 @@ class Diary
  
   def show_students
     #  Wyświetla wszystkich studentów
- 
+    @students
     # docelowo
     # Numer w dzienniku. Imię i nazwisko
     # 1. Rafał Roźniakowski
@@ -50,11 +53,21 @@ class Diary
     # W-F
   end
  
-  def add_student(name, last_name)
-    @student = Student.new()
+  def add_student(first_name, last_name)
+   
+    students << Student.new(first_name, last_name, @start_id)
+    @start_id += 1
+    
   end
+
+
  
   def remove_student(id)
+    students.delete_if do |student| 
+      student.id == id 
+    
+    end
+    
     # Usuwa ucznia z dziennika jeżeli w nim istnieje
     # Tutaj coś jeszcze powinno się zadziać, na razie nie piszę zobaczymy czy wykminisz
   end
@@ -66,6 +79,9 @@ class Diary
   def add_grade_by_full_name(subject_name, student_name, grade)
     # Dodaje ocene dla ucznia wg jego imienia i nazwiska w dzienniku
   end
+
+ 
+
 end
  
 class Subject
@@ -78,23 +94,28 @@ end
  
 class Student
   attr_reader :name, :last_name, :id
-  def initialize(id, name, last_name)
-    @student_id = id
-    @student_name = name
-    @student_last_name = lastname
-  end
-
-  def to_s
-    "First name: #{@name}, Last name: #{@last_name}, Id: #{@id}"
+  def initialize(name, last_name, id)
+    @name = name
+    @last_name = last_name
+    @id = id
   end
   
 end
  
  
-diary = Diary.new(...)
+diary = Diary.new("III klasa")
+# puts diary.ids.shift
+# puts diary.ids.shift
+# puts diary.ids.shift
+# puts diary.ids.inspect
+puts diary.start_id
+puts diary.name 
+puts diary.students.inspect
 diary.add_student('Jan', 'Kowalski')
 diary.add_student('Maciek', 'Wojtaszek')
 diary.add_student('Rafał', 'Roźniakowski')
+puts diary.students.inspect
+puts diary.start_id
 # diary.show_students
 # diary.show_subjects
 # diary.add_grade_by_id('Matematyka', 1, 3)
@@ -105,6 +126,7 @@ diary.add_student('Rafał', 'Roźniakowski')
 # diary.add_grade_by_full_name('W-F', 'Maciej Wojtaszek', 3)
 # diary.subject_grades('Matematyka')
 # diary.student_grades('Jan Kowalski')
-# diary.remove_student('Jan Kowalski')
+diary.remove_student(1)
+puts diary.students.inspect
 # diary.subject_grades('Matematyka')
 # diary.student_grades('Jan Kowalski')
